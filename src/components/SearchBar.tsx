@@ -1,32 +1,88 @@
 import type { Handle } from "@remix-run/component";
 import { App } from "../App";
+import type { Product } from "../types/types";
+
 
 export function SearchBar(this: Handle) {
 	const ctx = this.context.get(App);
+
+	let query = "";
+	let results: Product[] = [];
 	let isSearching = false;
 	let showResults = false;
+	let searchController: AbortController | null = null;
 
-	this.on(ctx, {
-		"search.started": () => {
-			isSearching = true;
-			showResults = true;
-			this.update();
-		},
-		"search.completed": () => {
+	const performSearch = (searchQuery: string): Product[] => {
+		if (!searchQuery.trim()) {
+			return [];
+		}
+
+		const lowerQuery = searchQuery.toLowerCase();
+
+		return ctx.products.filter((product) => {
+			const matchesName = product.name.toLowerCase().includes(lowerQuery);
+			const matchesDescription = product.description
+				.toLowerCase()
+				.includes(lowerQuery);
+			const matchesCategory = product.category
+				.toLowerCase()
+				.includes(lowerQuery);
+
+			return matchesName || matchesDescription || matchesCategory;
+		});
+	};
+
+	const search = async (searchQuery: string, signal?: AbortSignal) => {
+		query = searchQuery;
+
+		if (searchController) {
+			searchController.abort();
+		}
+
+		searchController = new AbortController();
+		const searchSignal = signal || searchController.signal;
+
+		isSearching = true;
+		showResults = true;
+		this.update();
+
+		try {
+			await new Promise<void>((resolve, reject) => {
+				const timeout = setTimeout(resolve, 300);
+				searchSignal.addEventListener("abort", () => {
+					clearTimeout(timeout);
+					reject(new Error("Search cancelled"));
+				});
+			});
+
+			if (searchSignal.aborted) {
+				isSearching = false;
+				this.update();
+				return;
+			}
+
+			results = performSearch(searchQuery);
 			isSearching = false;
 			this.update();
-		},
-		"search.cancelled": () => {
+		} catch {
 			isSearching = false;
-			showResults = false;
 			this.update();
-		},
-	});
+		}
+	};
+
+	const clearSearch = () => {
+		if (searchController) {
+			searchController.abort();
+		}
+
+		query = "";
+		results = [];
+		isSearching = false;
+		showResults = false;
+		this.update();
+	};
 
 	return () => {
-		const query = ctx.searchQuery;
-		const results = ctx.searchResults;
-
 		return (
 			<div
 				css={{
@@ -56,7 +112,7 @@ export function SearchBar(this: Handle) {
 						on={{
 							async input(event, signal) {
 								const value = event.currentTarget.value;
-								await ctx.search(value, signal);
+								await search(value, signal);
 							},
 							focus: () => {
 								if (query) {
@@ -65,7 +121,7 @@ export function SearchBar(this: Handle) {
 								}
 							},
 						}}
-					/>					
+					/>
 					<span
 						css={{
 							position: "absolute",
@@ -78,7 +134,6 @@ export function SearchBar(this: Handle) {
 					>
 						🔍
 					</span>
-
 					{query && (
 						<button
 							css={{
@@ -97,17 +152,12 @@ export function SearchBar(this: Handle) {
 								},
 							}}
 							on={{
-								click: () => {
-									ctx.clearSearch();
-									showResults = false;
-									this.update();
-								},
+								click: clearSearch,
 							}}
 						>
 							✕
 						</button>
 					)}
-
 					{isSearching && (
 						<div
 							css={{
@@ -129,7 +179,6 @@ export function SearchBar(this: Handle) {
 						/>
 					)}
 				</div>
-
 				{showResults && query && (
 					<div
 						css={{
@@ -186,7 +235,6 @@ export function SearchBar(this: Handle) {
 								Close
 							</button>
 						</div>
-
 						{results.length > 0 && (
 							<div css={{ padding: "8px" }}>
 								{results.map((product) => (
@@ -229,7 +277,7 @@ export function SearchBar(this: Handle) {
 													objectFit: "cover",
 												}}
 											/>
-										</div>										
+										</div>
 										<div css={{ flex: "1" }}>
 											<div
 												css={{
@@ -259,7 +307,7 @@ export function SearchBar(this: Handle) {
 											>
 												${product.price.toFixed(2)}
 											</div>
-										</div>										
+										</div>
 										<button
 											css={{
 												alignSelf: "center",

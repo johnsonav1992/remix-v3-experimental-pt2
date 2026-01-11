@@ -10,10 +10,7 @@ export function WishlistPanel(this: Handle) {
 	this.on(ctx, {
 		"wishlist.added": update,
 		"wishlist.removed": update,
-		"wishlist.synced": () => {
-			this.update();
-			console.log("Wishlist synced from another tab!");
-		},
+		"wishlist.synced": () => this.update(),
 	});
 
 	return () => {

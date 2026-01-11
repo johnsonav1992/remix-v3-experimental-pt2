@@ -8,7 +8,7 @@ const PRODUCTS_DB: Product[] = [
 			"Creamy, ripe avocados perfect for toast, salads, or guacamole. Rich in healthy fats.",
 		price: 4.99,
 		image:
-			"https://images.unsplash.com/photo-1601493700631-2b16ec4b4716?w=400&h=300&fit=crop&q=80",
+			"https://images.unsplash.com/photo-1519162808019-7de1683fa2ad?q=80&w=2150&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "produce",
 		inStock: true,
 	},
@@ -19,7 +19,7 @@ const PRODUCTS_DB: Product[] = [
 			"A colorful mix of purple, orange, and yellow carrots. Sweet and crunchy.",
 		price: 3.49,
 		image:
-			"https://images.unsplash.com/photo-1590865101275-23671238eb40?w=400&h=300&fit=crop&q=80",
+			"https://images.unsplash.com/photo-1580716685595-98bd80bf3c01?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "produce",
 		inStock: true,
 	},
@@ -52,7 +52,7 @@ const PRODUCTS_DB: Product[] = [
 			"Extra firm organic tofu. High in protein and perfect for stir-fries.",
 		price: 4.49,
 		image:
-			"https://images.unsplash.com/photo-1585238342024-78d387f4a707?w=400&h=300&fit=crop&q=80",
+			"https://images.unsplash.com/photo-1722635940350-d1b2e5129379?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "protein",
 		inStock: true,
 	},
@@ -74,7 +74,7 @@ const PRODUCTS_DB: Product[] = [
 			"Canned organic chickpeas. Perfect for hummus, curries, and salads.",
 		price: 2.49,
 		image:
-			"https://images.unsplash.com/photo-1585914924626-45adac9e6b42?w=400&h=300&fit=crop&q=80",
+			"https://images.unsplash.com/photo-1644432757699-bb5a01e8fb0e?q=80&w=2148&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "protein",
 		inStock: true,
 	},
@@ -84,7 +84,7 @@ const PRODUCTS_DB: Product[] = [
 		description: "Fermented soy tempeh. Nutty flavor and great protein source.",
 		price: 5.49,
 		image:
-			"https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&h=300&fit=crop&q=80",
+			"https://plus.unsplash.com/premium_photo-1664647788800-cf64e0aa931f?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "protein",
 		inStock: false,
 	},
@@ -95,7 +95,7 @@ const PRODUCTS_DB: Product[] = [
 			"Freshly baked whole grain bread. No animal products, 100% plant-based.",
 		price: 4.99,
 		image:
-			"https://images.unsplash.com/photo-1585478259715-876acc5be8eb?w=400&h=300&fit=crop&q=80",
+			"https://images.unsplash.com/photo-1626423642268-24cc183cbacb?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "grains",
 		inStock: true,
 	},
@@ -105,7 +105,7 @@ const PRODUCTS_DB: Product[] = [
 		description: "Organic tri-color quinoa. Complete protein and gluten-free.",
 		price: 6.99,
 		image:
-			"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=300&fit=crop&q=80",
+			"https://images.unsplash.com/photo-1586201375799-47cd24c3f595?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "grains",
 		inStock: true,
 	},
@@ -115,7 +115,7 @@ const PRODUCTS_DB: Product[] = [
 		description: "Long grain brown rice. Nutty flavor and high in fiber.",
 		price: 5.49,
 		image:
-			"https://images.unsplash.com/photo-1536304993881-ff6e9eefa2a6?w=400&h=300&fit=crop&q=80",
+			"https://plus.unsplash.com/premium_photo-1726072357584-b613d4134334?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "grains",
 		inStock: true,
 	},
@@ -126,7 +126,7 @@ const PRODUCTS_DB: Product[] = [
 			"Creamy almond butter made from roasted almonds. No added sugar.",
 		price: 8.99,
 		image:
-			"https://images.unsplash.com/photo-1590080875515-8a3a8dc5635e?w=400&h=300&fit=crop&q=80",
+			"https://images.unsplash.com/photo-1615110250484-e8c3b151b957?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "snacks",
 		inStock: true,
 	},
@@ -137,7 +137,7 @@ const PRODUCTS_DB: Product[] = [
 			"70% cacao dark chocolate. Dairy-free and rich in antioxidants.",
 		price: 3.99,
 		image:
-			"https://images.unsplash.com/photo-1548365328-8c6db3220e4c?w=400&h=300&fit=crop&q=80",
+			"https://plus.unsplash.com/premium_photo-1670426501227-450cb0d92a16?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "snacks",
 		inStock: true,
 	},
@@ -148,7 +148,7 @@ const PRODUCTS_DB: Product[] = [
 			"Three flavors: Classic, Roasted Red Pepper, and Garlic. Made fresh daily.",
 		price: 6.49,
 		image:
-			"https://images.unsplash.com/photo-1574071318508-1cdbcd80ad50?w=400&h=300&fit=crop&q=80",
+			"https://images.unsplash.com/photo-1637949385162-e416fb15b2ce?q=80&w=2304&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "snacks",
 		inStock: true,
 	},
@@ -159,7 +159,7 @@ const PRODUCTS_DB: Product[] = [
 			"Creamy oat milk. Perfect for coffee, cereal, or drinking straight.",
 		price: 4.99,
 		image:
-			"https://images.unsplash.com/photo-1635334430263-128290f65e23?w=400&h=300&fit=crop&q=80",
+			"https://plus.unsplash.com/premium_photo-1664647903517-70bb8213c743?q=80&w=1287&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "beverages",
 		inStock: true,
 	},
@@ -170,7 +170,7 @@ const PRODUCTS_DB: Product[] = [
 			"Pre-made green smoothie with spinach, banana, and mango. Ready to drink.",
 		price: 5.99,
 		image:
-			"https://images.unsplash.com/photo-1610970881699-44a55b8cf7ae?w=400&h=300&fit=crop&q=80",
+			"https://plus.unsplash.com/premium_photo-1700084621249-b22c621ac4e9?q=80&w=1321&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
 		category: "beverages",
 		inStock: true,
 	},

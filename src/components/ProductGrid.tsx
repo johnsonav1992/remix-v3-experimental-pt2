@@ -14,16 +14,28 @@ const categories = [
 export function ProductGrid(this: Handle) {
 	const ctx = this.context.get(App);
 
+	let selectedCategory = "all";
+
 	this.on(ctx, {
-		"filter.changed": () => this.update(),
 		"products.loading": () => this.update(),
 		"products.loaded": () => this.update(),
 		"products.error": () => this.update(),
 	});
 
+	const getFilteredProducts = () => {
+		if (selectedCategory === "all") {
+			return ctx.products;
+		}
+		return ctx.products.filter((p) => p.category === selectedCategory);
+	};
+
+	const setCategory = (category: string) => {
+		selectedCategory = category;
+		this.update();
+	};
+
 	return () => {
-		const products = ctx.filteredProducts;
-		const selectedCategory = ctx.selectedCategory;
+		const products = getFilteredProducts();
 		const isLoading = ctx.isLoadingProducts;
 		const error = ctx.productsError;
 
@@ -64,7 +76,7 @@ export function ProductGrid(this: Handle) {
 								},
 							}}
 							on={{
-								click: () => ctx.setCategory(category.id),
+								click: () => setCategory(category.id),
 							}}
 						>
 							<span css={{ fontSize: "18px" }}>{category.icon}</span>
