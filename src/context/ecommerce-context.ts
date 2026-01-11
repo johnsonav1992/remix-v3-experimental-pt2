@@ -1,6 +1,9 @@
 import { TypedEventTarget } from "@remix-run/interaction";
 import { fetchProducts } from "../api/fake-products-api";
-import type { EcommerceEventMap } from "../events/ecommerce-event-map";
+import {
+	EcommerceEvent,
+	type EcommerceEventMap,
+} from "../events/ecommerce-event-map";
 import type { CartItem, Product } from "../types/types";
 
 export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
@@ -57,7 +60,7 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 
 		this.#isLoadingProducts = true;
 		this.#productsError = null;
-		this.dispatchEvent(new Event("products.loading"));
+		this.dispatchEvent(new EcommerceEvent("products.loading"));
 
 		try {
 			const products = await fetchProducts(1500, signal);
@@ -66,7 +69,7 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 
 			this.#products = products;
 			this.#isLoadingProducts = false;
-			this.dispatchEvent(new Event("products.loaded"));
+			this.dispatchEvent(new EcommerceEvent("products.loaded"));
 		} catch (error) {
 			if (error instanceof Error && error.message === "Request aborted") {
 				return;
@@ -74,7 +77,7 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 
 			this.#isLoadingProducts = false;
 			this.#productsError = error as Error;
-			this.dispatchEvent(new Event("products.error"));
+			this.dispatchEvent(new EcommerceEvent("products.error"));
 		}
 	}
 
@@ -89,7 +92,7 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 			this.#cart.push({ product, quantity: 1 });
 		}
 
-		this.dispatchEvent(new Event("cart.added"));
+		this.dispatchEvent(new EcommerceEvent("cart.added"));
 	}
 
 	public removeFromCart(productId: string) {
@@ -97,7 +100,7 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 		this.#cart = this.#cart.filter((item) => item.product.id !== productId);
 
 		if (item) {
-			this.dispatchEvent(new Event("cart.removed"));
+			this.dispatchEvent(new EcommerceEvent("cart.removed"));
 		}
 	}
 
@@ -109,14 +112,14 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 				this.removeFromCart(productId);
 			} else {
 				item.quantity = quantity;
-				this.dispatchEvent(new Event("cart.updated"));
+				this.dispatchEvent(new EcommerceEvent("cart.updated"));
 			}
 		}
 	}
 
 	public selectProduct(product: Product | null) {
 		this.#selectedProduct = product;
-		this.dispatchEvent(new Event("product.selected"));
+		this.dispatchEvent(new EcommerceEvent("product.selected"));
 	}
 
 	public isInWishlist(productId: string): boolean {
@@ -130,7 +133,7 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 
 		this.#wishlist.add(product.id);
 		this.#syncWishlistToStorage();
-		this.dispatchEvent(new Event("wishlist.added"));
+		this.dispatchEvent(new EcommerceEvent("wishlist.added"));
 	}
 
 	public removeFromWishlist(productId: string) {
@@ -143,7 +146,7 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 		this.#syncWishlistToStorage();
 
 		if (product) {
-			this.dispatchEvent(new Event("wishlist.removed"));
+			this.dispatchEvent(new EcommerceEvent("wishlist.removed"));
 		}
 	}
 
@@ -162,17 +165,15 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 				const ids = JSON.parse(stored) as string[];
 				this.#wishlist = new Set(ids);
 			}
-		} catch {
-		}
+		} catch {}
 
 		window.addEventListener("storage", (event) => {
 			if (event.key === "ecommerce.wishlist" && event.newValue) {
 				try {
 					const ids = JSON.parse(event.newValue) as string[];
 					this.#wishlist = new Set(ids);
-					this.dispatchEvent(new Event("wishlist.synced"));
-				} catch {
-				}
+					this.dispatchEvent(new EcommerceEvent("wishlist.synced"));
+				} catch {}
 			}
 		});
 	}
@@ -190,7 +191,6 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 					newValue: wishlistJson,
 				}),
 			);
-		} catch {
-		}
+		} catch {}
 	}
 }

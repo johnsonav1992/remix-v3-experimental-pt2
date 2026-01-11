@@ -10,3 +10,12 @@ export type EcommerceEventMap = {
 	"products.loaded": Event;
 	"products.error": Event;
 };
+
+export class EcommerceEvent extends Event {
+	type: keyof EcommerceEventMap;
+
+	constructor(type: keyof EcommerceEventMap) {
+		super(type);
+		this.type = type;
+	}
+}
