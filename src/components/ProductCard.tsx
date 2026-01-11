@@ -8,7 +8,10 @@ type Props = {
 	onViewDetails: (product: Product) => void;
 };
 
-export function ProductCard(this: Handle, props: Props) {
+export function ProductCard(
+	this: Handle,
+	{ product, onAddToCart, onViewDetails }: Props,
+) {
 	const ctx = this.context.get(App);
 
 	this.on(ctx, {
@@ -17,7 +20,7 @@ export function ProductCard(this: Handle, props: Props) {
 	});
 
 	return () => {
-		const isInWishlist = ctx.isInWishlist(props.product.id);
+		const isInWishlist = ctx.isInWishlist(product.id);
 
 		return (
 			<div
@@ -46,18 +49,18 @@ export function ProductCard(this: Handle, props: Props) {
 						cursor: "pointer",
 					}}
 					on={{
-						click: () => props.onViewDetails(props.product),
+						click: () => onViewDetails(product),
 					}}
 				>
 					<img
-						src={props.product.image}
-						alt={props.product.name}
+						src={product.image}
+						alt={product.name}
 						css={{
 							width: "100%",
 							height: "100%",
 							objectFit: "cover",
 						}}
-					/>					
+					/>
 					<button
 						css={{
 							position: "absolute",
@@ -85,17 +88,17 @@ export function ProductCard(this: Handle, props: Props) {
 						on={{
 							click: (e) => {
 								e.stopPropagation();
-								ctx.toggleWishlist(props.product);
+								ctx.toggleWishlist(product);
 							},
 						}}
 					>
 						{isInWishlist ? "❤️" : "🤍"}
 					</button>
-				</div>				
+				</div>
 				<div
 					css={{ flex: "1" }}
 					on={{
-						click: () => props.onViewDetails(props.product),
+						click: () => onViewDetails(product),
 					}}
 				>
 					<h3
@@ -106,8 +109,8 @@ export function ProductCard(this: Handle, props: Props) {
 							color: "#1f2937",
 						}}
 					>
-						{props.product.name}
-					</h3>					
+						{product.name}
+					</h3>
 					<p
 						css={{
 							margin: "0 0 12px 0",
@@ -121,8 +124,8 @@ export function ProductCard(this: Handle, props: Props) {
 							WebkitBoxOrient: "vertical",
 						}}
 					>
-						{props.product.description}
-					</p>					
+						{product.description}
+					</p>
 					<div
 						css={{
 							fontSize: "24px",
@@ -131,11 +134,11 @@ export function ProductCard(this: Handle, props: Props) {
 							marginBottom: "16px",
 						}}
 					>
-						${props.product.price.toFixed(2)}
+						${product.price.toFixed(2)}
 					</div>
 				</div>
 
-				{!props.product.inStock ? (
+				{!product.inStock ? (
 					<div
 						css={{
 							padding: "12px",
@@ -169,7 +172,7 @@ export function ProductCard(this: Handle, props: Props) {
 							},
 						}}
 						on={{
-							click: () => props.onAddToCart(props.product),
+							click: () => onAddToCart(product),
 						}}
 					>
 						Add to Cart
