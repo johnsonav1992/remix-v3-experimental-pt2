@@ -1,224 +1,21 @@
 import { TypedEventTarget } from "@remix-run/interaction";
-
-type EcommerceEventMap = {
-	"cart.added": EcommerceEvent;
-	"cart.removed": EcommerceEvent;
-	"cart.updated": EcommerceEvent;
-	"product.selected": EcommerceEvent;
-	"filter.changed": Event;
-};
-
-class EcommerceEvent extends Event {
-	product?: Product;
-	cartItem?: CartItem;
-
-	constructor(
-		type: keyof EcommerceEventMap,
-		data?: { product?: Product; cartItem?: CartItem },
-	) {
-		super(type);
-		this.product = data?.product;
-		this.cartItem = data?.cartItem;
-	}
-}
-
-export type Product = {
-	id: string;
-	name: string;
-	description: string;
-	price: number;
-	image: string;
-	category: string;
-	inStock: boolean;
-};
-
-export type CartItem = {
-	product: Product;
-	quantity: number;
-};
+import { fetchProducts } from "../api/fake-products-api";
+import type { EcommerceEventMap } from "../events/ecommerce-event-map";
+import type { CartItem, Product } from "../types/types";
 
 export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
-	#products: Product[] = [
-		{
-			id: "1",
-			name: "Organic Avocados",
-			description:
-				"Creamy, ripe avocados perfect for toast, salads, or guacamole. Rich in healthy fats.",
-			price: 4.99,
-			image:
-				"https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=400&h=300&fit=crop&q=80",
-			category: "produce",
-			inStock: true,
-		},
-		{
-			id: "2",
-			name: "Rainbow Carrots",
-			description:
-				"A colorful mix of purple, orange, and yellow carrots. Sweet and crunchy.",
-			price: 3.49,
-			image:
-				"https://images.unsplash.com/photo-1447175008436-054170c2e979?w=400&h=300&fit=crop&q=80",
-			category: "produce",
-			inStock: true,
-		},
-		{
-			id: "3",
-			name: "Fresh Strawberries",
-			description:
-				"Sweet, juicy strawberries. Perfect for snacking or smoothies.",
-			price: 5.99,
-			image:
-				"https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=400&h=300&fit=crop&q=80",
-			category: "produce",
-			inStock: true,
-		},
-		{
-			id: "4",
-			name: "Baby Spinach",
-			description:
-				"Tender baby spinach leaves. Great for salads, smoothies, and cooking.",
-			price: 3.99,
-			image:
-				"https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=400&h=300&fit=crop&q=80",
-			category: "produce",
-			inStock: true,
-		},
-		{
-			id: "5",
-			name: "Organic Tofu",
-			description:
-				"Extra firm organic tofu. High in protein and perfect for stir-fries.",
-			price: 4.49,
-			image:
-				"https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?w=400&h=300&fit=crop&q=80",
-			category: "protein",
-			inStock: true,
-		},
-		{
-			id: "6",
-			name: "Black Bean Burgers",
-			description:
-				"Delicious plant-based burger patties made with black beans and spices.",
-			price: 7.99,
-			image:
-				"https://images.unsplash.com/photo-1520072959219-c595dc870360?w=400&h=300&fit=crop&q=80",
-			category: "protein",
-			inStock: true,
-		},
-		{
-			id: "7",
-			name: "Chickpeas",
-			description:
-				"Canned organic chickpeas. Perfect for hummus, curries, and salads.",
-			price: 2.49,
-			image:
-				"https://images.unsplash.com/photo-1589876876512-4f23c7c50c8e?w=400&h=300&fit=crop&q=80",
-			category: "protein",
-			inStock: true,
-		},
-		{
-			id: "8",
-			name: "Tempeh",
-			description:
-				"Fermented soy tempeh. Nutty flavor and great protein source.",
-			price: 5.49,
-			image:
-				"https://images.unsplash.com/photo-1603048588665-791ca8aea617?w=400&h=300&fit=crop&q=80",
-			category: "protein",
-			inStock: false,
-		},
-		{
-			id: "9",
-			name: "Whole Grain Bread",
-			description:
-				"Freshly baked whole grain bread. No animal products, 100% plant-based.",
-			price: 4.99,
-			image:
-				"https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400&h=300&fit=crop&q=80",
-			category: "grains",
-			inStock: true,
-		},
-		{
-			id: "10",
-			name: "Quinoa",
-			description:
-				"Organic tri-color quinoa. Complete protein and gluten-free.",
-			price: 6.99,
-			image:
-				"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=300&fit=crop&q=80",
-			category: "grains",
-			inStock: true,
-		},
-		{
-			id: "11",
-			name: "Brown Rice",
-			description: "Long grain brown rice. Nutty flavor and high in fiber.",
-			price: 5.49,
-			image:
-				"https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=300&fit=crop&q=80",
-			category: "grains",
-			inStock: true,
-		},
-		{
-			id: "12",
-			name: "Almond Butter",
-			description:
-				"Creamy almond butter made from roasted almonds. No added sugar.",
-			price: 8.99,
-			image:
-				"https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=400&h=300&fit=crop&q=80",
-			category: "snacks",
-			inStock: true,
-		},
-		{
-			id: "13",
-			name: "Dark Chocolate Bar",
-			description:
-				"70% cacao dark chocolate. Dairy-free and rich in antioxidants.",
-			price: 3.99,
-			image:
-				"https://images.unsplash.com/photo-1511381939415-e44015466834?w=400&h=300&fit=crop&q=80",
-			category: "snacks",
-			inStock: true,
-		},
-		{
-			id: "14",
-			name: "Hummus Variety Pack",
-			description:
-				"Three flavors: Classic, Roasted Red Pepper, and Garlic. Made fresh daily.",
-			price: 6.49,
-			image:
-				"https://images.unsplash.com/photo-1571986563387-9d1b39fe3d98?w=400&h=300&fit=crop&q=80",
-			category: "snacks",
-			inStock: true,
-		},
-		{
-			id: "15",
-			name: "Oat Milk",
-			description:
-				"Creamy oat milk. Perfect for coffee, cereal, or drinking straight.",
-			price: 4.99,
-			image:
-				"https://images.unsplash.com/photo-1623065422902-30a2d299bbe4?w=400&h=300&fit=crop&q=80",
-			category: "beverages",
-			inStock: true,
-		},
-		{
-			id: "16",
-			name: "Green Smoothie",
-			description:
-				"Pre-made green smoothie with spinach, banana, and mango. Ready to drink.",
-			price: 5.99,
-			image:
-				"https://images.unsplash.com/photo-1638176066666-ffb2f013c7dd?w=400&h=300&fit=crop&q=80",
-			category: "beverages",
-			inStock: true,
-		},
-	];
+	#products: Product[] = [];
+	#isLoadingProducts = false;
+	#productsError: Error | null = null;
 
 	#cart: CartItem[] = [];
 	#selectedProduct: Product | null = null;
 	#selectedCategory: string = "all";
+
+	#wishlist: Set<string> = new Set();
+	#searchQuery: string = "";
+	#searchResults: Product[] = [];
+	#searchController: AbortController | null = null;
 
 	get products() {
 		return this.#products;
@@ -240,6 +37,7 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 		if (this.#selectedCategory === "all") {
 			return this.#products;
 		}
+
 		return this.#products.filter((p) => p.category === this.#selectedCategory);
 	}
 
@@ -254,6 +52,60 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 		return this.#cart.reduce((sum, item) => sum + item.quantity, 0);
 	}
 
+	get isLoadingProducts() {
+		return this.#isLoadingProducts;
+	}
+
+	get productsError() {
+		return this.#productsError;
+	}
+
+	get wishlist() {
+		return this.#products.filter((p) => this.#wishlist.has(p.id));
+	}
+
+	get wishlistIds() {
+		return Array.from(this.#wishlist);
+	}
+
+	get searchQuery() {
+		return this.#searchQuery;
+	}
+
+	get searchResults() {
+		return this.#searchResults;
+	}
+
+	public async loadProducts(signal?: AbortSignal) {
+		if (this.#isLoadingProducts) return;
+
+		this.#isLoadingProducts = true;
+		this.#productsError = null;
+		this.dispatchEvent(new Event("products.loading"));
+
+		try {
+			const products = await fetchProducts(1500, signal);
+
+			if (signal?.aborted) return;
+
+			this.#products = products;
+			this.#isLoadingProducts = false;
+			this.dispatchEvent(new Event("products.loaded"));
+
+			console.log(`✅ Loaded ${products.length} products from API`);
+		} catch (error) {
+			if (error instanceof Error && error.message === "Request aborted") {
+				return;
+			}
+
+			this.#isLoadingProducts = false;
+			this.#productsError = error as Error;
+			this.dispatchEvent(new Event("products.error"));
+
+			console.error("❌ Failed to load products:", error);
+		}
+	}
+
 	public addToCart(product: Product) {
 		const existingItem = this.#cart.find(
 			(item) => item.product.id === product.id,
@@ -265,7 +117,7 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 			this.#cart.push({ product, quantity: 1 });
 		}
 
-		this.dispatchEvent(new EcommerceEvent("cart.added", { product }));
+		this.dispatchEvent(new Event("cart.added"));
 	}
 
 	public removeFromCart(productId: string) {
@@ -273,9 +125,7 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 		this.#cart = this.#cart.filter((item) => item.product.id !== productId);
 
 		if (item) {
-			this.dispatchEvent(
-				new EcommerceEvent("cart.removed", { cartItem: item }),
-			);
+			this.dispatchEvent(new Event("cart.removed"));
 		}
 	}
 
@@ -287,22 +137,163 @@ export class EcommerceContext extends TypedEventTarget<EcommerceEventMap> {
 				this.removeFromCart(productId);
 			} else {
 				item.quantity = quantity;
-				this.dispatchEvent(
-					new EcommerceEvent("cart.updated", { cartItem: item }),
-				);
+				this.dispatchEvent(new Event("cart.updated"));
 			}
 		}
 	}
 
 	public selectProduct(product: Product | null) {
 		this.#selectedProduct = product;
-		this.dispatchEvent(
-			new EcommerceEvent("product.selected", product ? { product } : undefined),
-		);
+		this.dispatchEvent(new Event("product.selected"));
 	}
 
 	public setCategory(category: string) {
 		this.#selectedCategory = category;
 		this.dispatchEvent(new Event("filter.changed"));
+	}
+
+	public isInWishlist(productId: string): boolean {
+		return this.#wishlist.has(productId);
+	}
+
+	public addToWishlist(product: Product) {
+		if (this.#wishlist.has(product.id)) {
+			return;
+		}
+
+		this.#wishlist.add(product.id);
+		this.#syncWishlistToStorage();
+		this.dispatchEvent(new Event("wishlist.added"));
+	}
+
+	public removeFromWishlist(productId: string) {
+		if (!this.#wishlist.has(productId)) {
+			return;
+		}
+
+		const product = this.#products.find((p) => p.id === productId);
+		this.#wishlist.delete(productId);
+		this.#syncWishlistToStorage();
+
+		if (product) {
+			this.dispatchEvent(new Event("wishlist.removed"));
+		}
+	}
+
+	public toggleWishlist(product: Product) {
+		if (this.#wishlist.has(product.id)) {
+			this.removeFromWishlist(product.id);
+		} else {
+			this.addToWishlist(product);
+		}
+	}
+
+	public initWishlistSync() {
+		try {
+			const stored = localStorage.getItem("ecommerce.wishlist");
+			if (stored) {
+				const ids = JSON.parse(stored) as string[];
+				this.#wishlist = new Set(ids);
+			}
+		} catch (error) {
+			console.error("Failed to load wishlist from storage:", error);
+		}
+
+		window.addEventListener("storage", (event) => {
+			if (event.key === "ecommerce.wishlist" && event.newValue) {
+				try {
+					const ids = JSON.parse(event.newValue) as string[];
+					this.#wishlist = new Set(ids);
+					this.dispatchEvent(new Event("wishlist.synced"));
+				} catch (error) {
+					console.error("Failed to sync wishlist from storage:", error);
+				}
+			}
+		});
+	}
+
+	#syncWishlistToStorage() {
+		try {
+			const wishlistArray = Array.from(this.#wishlist);
+			const wishlistJson = JSON.stringify(wishlistArray);
+
+			localStorage.setItem("ecommerce.wishlist", wishlistJson);
+
+			window.dispatchEvent(
+				new StorageEvent("storage", {
+					key: "ecommerce.wishlist",
+					newValue: wishlistJson,
+				}),
+			);
+		} catch (error) {
+			console.error("Failed to sync wishlist to storage:", error);
+		}
+	}
+
+	public async search(query: string, signal?: AbortSignal) {
+		this.#searchQuery = query;
+
+		if (this.#searchController) {
+			this.#searchController.abort();
+		}
+
+		this.#searchController = new AbortController();
+		const searchSignal = signal || this.#searchController.signal;
+
+		this.dispatchEvent(new Event("search.started"));
+
+		try {
+			await new Promise<void>((resolve, reject) => {
+				const timeout = setTimeout(resolve, 300);
+				searchSignal.addEventListener("abort", () => {
+					clearTimeout(timeout);
+					reject(new Error("Search cancelled"));
+				});
+			});
+
+			if (searchSignal.aborted) {
+				this.dispatchEvent(new Event("search.cancelled"));
+				return;
+			}
+
+			const results = this.#performSearch(query);
+			this.#searchResults = results;
+
+			this.dispatchEvent(new Event("search.completed"));
+		} catch (error) {
+			if (!searchSignal.aborted) {
+				console.error("Search error:", error);
+			}
+		}
+	}
+
+	public clearSearch() {
+		if (this.#searchController) {
+			this.#searchController.abort();
+		}
+
+		this.#searchQuery = "";
+		this.#searchResults = [];
+		this.dispatchEvent(new Event("search.cancelled"));
+	}
+
+	#performSearch(query: string): Product[] {
+		if (!query.trim()) {
+			return [];
+		}
+
+		const lowerQuery = query.toLowerCase();
+
+		return this.#products.filter((product) => {
+			const matchesName = product.name.toLowerCase().includes(lowerQuery);
+			const matchesDescription = product.description
+				.toLowerCase()
+				.includes(lowerQuery);
+			const matchesCategory = product.category
+				.toLowerCase()
+				.includes(lowerQuery);
+
+			return matchesName || matchesDescription || matchesCategory;
+		});
 	}
 }

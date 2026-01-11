@@ -1,8 +1,8 @@
 import type { Handle } from "@remix-run/component";
-import { EcommerceApp } from "../../EcommerceApp";
+import { App } from "../App";
 
 export function Cart(this: Handle) {
-	const ctx = this.context.get(EcommerceApp);
+	const ctx = this.context.get(App);
 	let isOpen = false;
 
 	const update = () => this.update();
@@ -134,8 +134,7 @@ export function Cart(this: Handle) {
 							>
 								✕
 							</button>
-						</div>
-
+						</div>						
 						<div
 							css={{
 								flex: "1",
@@ -193,8 +192,7 @@ export function Cart(this: Handle) {
 														objectFit: "cover",
 													}}
 												/>
-											</div>
-
+											</div>											
 											<div css={{ flex: "1" }}>
 												<div
 													css={{
@@ -214,8 +212,7 @@ export function Cart(this: Handle) {
 													}}
 												>
 													${item.product.price.toFixed(2)}
-												</div>
-
+												</div>												
 												<div
 													css={{
 														display: "flex",

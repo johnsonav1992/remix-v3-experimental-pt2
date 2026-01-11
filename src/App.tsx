@@ -1,120 +1,97 @@
-/** biome-ignore-all lint/a11y/noLabelWithoutControl: don't need it right now */
 import type { Handle } from "@remix-run/component";
-import TodoList from "./components/TodoList/TodoList";
-import { AppContext } from "./context/context";
+import { Cart } from "./components/Cart";
+import { ProductDetail } from "./components/ProductDetail";
+import { ProductGrid } from "./components/ProductGrid";
+import { SearchBar } from "./components/SearchBar";
+import { WishlistPanel } from "./components/WishlistPanel";
+import { EcommerceContext } from "./context/ecommerce-context";
 
-export function App(this: Handle<AppContext>) {
-	const ctx = new AppContext();
-
+export function App(this: Handle<EcommerceContext>) {
+	const ctx = new EcommerceContext();
 	this.context.set(ctx);
+
+	ctx.initWishlistSync();
+	ctx.loadProducts();
 
 	return (
 		<div
 			css={{
 				minHeight: "100vh",
-				background: "#f8fafc",
-				padding: "40px 20px",
+				background: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
+				padding: "20px",
 				fontFamily:
 					'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
 			}}
 		>
-			<div
+			<header
 				css={{
-					maxWidth: "700px",
-					margin: "0 auto",
-					background: "#ffffff",
-					borderRadius: "8px",
-					padding: "40px",
-					boxShadow:
-						"0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.1)",
-					border: "1px solid #e5e7eb",
+					maxWidth: "1400px",
+					margin: "0 auto 40px auto",
+					textAlign: "center",
 				}}
 			>
 				<div
 					css={{
-						borderBottom: "2px solid #f3f4f6",
-						paddingBottom: "24px",
-						marginBottom: "32px",
+						fontSize: "48px",
+						marginBottom: "12px",
 					}}
 				>
-					<h1
-						css={{
-							margin: "0",
-							fontSize: "2rem",
-							fontWeight: "600",
-							color: "#1f2937",
-							letterSpacing: "-0.025em",
-						}}
-					>
-						Task Management
-					</h1>
-					<p
-						css={{
-							margin: "8px 0 0 0",
-							color: "#6b7280",
-							fontSize: "14px",
-							fontWeight: "500",
-						}}
-					>
-						Organize and track your daily tasks efficiently
-					</p>
+					🌱
 				</div>
-
-				<div
+				<h1
 					css={{
-						marginBottom: "32px",
+						margin: "0 0 8px 0",
+						fontSize: "3rem",
+						fontWeight: "700",
+						color: "#065f46",
+						letterSpacing: "-0.025em",
 					}}
 				>
-					<label
-						css={{
-							display: "block",
-							marginBottom: "8px",
-							fontSize: "14px",
-							fontWeight: "600",
-							color: "#374151",
-						}}
-					>
-						Add New Task
-					</label>
-					<input
-						type="text"
-						placeholder="Enter task description..."
-						css={{
-							width: "100%",
-							padding: "12px 16px",
-							border: "1px solid #d1d5db",
-							borderRadius: "6px",
-							fontSize: "14px",
-							color: "#111827",
-							background: "#ffffff",
-							transition:
-								"border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out",
-							outline: "none",
-							boxSizing: "border-box",
-							"&:focus": {
-								borderColor: "#3b82f6",
-								boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.1)",
-							},
-							"&::placeholder": {
-								color: "#9ca3af",
-							},
-						}}
-						on={{
-							keydown: (event) => {
-								if (event.key === "Enter") {
-									const input = event.target as HTMLInputElement;
-									if (input.value.trim() !== "") {
-										ctx.addTodo(input.value.trim());
-										input.value = "";
-									}
-								}
-							},
-						}}
-					/>
-				</div>
-
-				<TodoList />
-			</div>
+					GreenGrocer
+				</h1>
+				<p
+					css={{
+						margin: "0",
+						fontSize: "18px",
+						color: "#059669",
+						fontWeight: "500",
+					}}
+				>
+					Your one-stop shop for plant-based goodness
+				</p>
+			</header>
+			<main
+				css={{
+					maxWidth: "1400px",
+					margin: "0 auto",
+					background: "#ffffff",
+					borderRadius: "12px",
+					padding: "40px",
+					boxShadow:
+						"0 4px 6px rgba(0, 0, 0, 0.05), 0 10px 15px rgba(0, 0, 0, 0.1)",
+					border: "1px solid #d1fae5",
+				}}
+			>
+				<SearchBar />
+				<ProductGrid />
+			</main>
+			<Cart />
+			<WishlistPanel />
+			<ProductDetail />
+			<footer
+				css={{
+					maxWidth: "1400px",
+					margin: "40px auto 0 auto",
+					textAlign: "center",
+					color: "#059669",
+					fontSize: "14px",
+					fontWeight: "500",
+				}}
+			>
+				<p css={{ margin: "0" }}>
+					🌿 100% Plant-Based • Cruelty-Free • Sustainable 🌿
+				</p>
+			</footer>
 		</div>
 	);
 }

@@ -1,6 +1,6 @@
 import type { Handle } from "@remix-run/component";
+import { App } from "../App";
 import { ProductCard } from "./ProductCard";
-import { EcommerceApp } from "../../EcommerceApp";
 
 const categories = [
 	{ id: "all", name: "All Products", icon: "🛒" },
@@ -12,15 +12,20 @@ const categories = [
 ];
 
 export function ProductGrid(this: Handle) {
-	const ctx = this.context.get(EcommerceApp);
+	const ctx = this.context.get(App);
 
 	this.on(ctx, {
 		"filter.changed": () => this.update(),
+		"products.loading": () => this.update(),
+		"products.loaded": () => this.update(),
+		"products.error": () => this.update(),
 	});
 
 	return () => {
 		const products = ctx.filteredProducts;
 		const selectedCategory = ctx.selectedCategory;
+		const isLoading = ctx.isLoadingProducts;
+		const error = ctx.productsError;
 
 		return (
 			<div>
@@ -51,6 +56,8 @@ export function ProductGrid(this: Handle) {
 								display: "flex",
 								alignItems: "center",
 								gap: "8px",
+								opacity: isLoading ? "0.5" : "1",
+								pointerEvents: isLoading ? "none" : "auto",
 								"&:hover": {
 									background:
 										selectedCategory === category.id ? "#047857" : "#e5e7eb",
@@ -65,8 +72,82 @@ export function ProductGrid(this: Handle) {
 						</button>
 					))}
 				</div>
-
-				{products.length === 0 ? (
+				{isLoading && (
+					<div
+						css={{
+							textAlign: "center",
+							padding: "80px 20px",
+							color: "#059669",
+						}}
+					>
+						<div
+							css={{
+								width: "64px",
+								height: "64px",
+								margin: "0 auto 24px",
+								border: "6px solid #d1fae5",
+								borderTopColor: "#059669",
+								borderRadius: "50%",
+								animation: "spin 1s linear infinite",
+								"@keyframes spin": {
+									"0%": { transform: "rotate(0deg)" },
+									"100%": { transform: "rotate(360deg)" },
+								},
+							}}
+						/>
+						<p
+							css={{ fontSize: "20px", fontWeight: "600", margin: "0 0 8px 0" }}
+						>
+							Loading Products...
+						</p>
+						<p css={{ fontSize: "14px", color: "#6b7280", margin: "0" }}>
+							Fetching fresh produce from our API
+						</p>
+					</div>
+				)}
+				{!isLoading && error && (
+					<div
+						css={{
+							textAlign: "center",
+							padding: "60px 20px",
+							color: "#dc2626",
+						}}
+					>
+						<div css={{ fontSize: "64px", marginBottom: "16px" }}>⚠️</div>
+						<p
+							css={{ fontSize: "20px", fontWeight: "600", margin: "0 0 8px 0" }}
+						>
+							Failed to Load Products
+						</p>
+						<p
+							css={{ fontSize: "14px", color: "#6b7280", margin: "0 0 16px 0" }}
+						>
+							{error.message}
+						</p>
+						<button
+							css={{
+								padding: "12px 24px",
+								background: "#dc2626",
+								color: "#ffffff",
+								border: "none",
+								borderRadius: "6px",
+								fontSize: "14px",
+								fontWeight: "600",
+								cursor: "pointer",
+								transition: "background 0.2s",
+								"&:hover": {
+									background: "#b91c1c",
+								},
+							}}
+							on={{
+								click: () => ctx.loadProducts(),
+							}}
+						>
+							Retry
+						</button>
+					</div>
+				)}
+				{!isLoading && !error && products.length === 0 && (
 					<div
 						css={{
 							textAlign: "center",
@@ -79,7 +160,8 @@ export function ProductGrid(this: Handle) {
 							No products found
 						</p>
 					</div>
-				) : (
+				)}
+				{!isLoading && !error && products.length > 0 && (
 					<div
 						css={{
 							display: "grid",

@@ -1,8 +1,8 @@
 import type { Handle } from "@remix-run/component";
-import { EcommerceApp } from "../../EcommerceApp";
+import { App } from "../App";
 
 export function ProductDetail(this: Handle) {
-	const ctx = this.context.get(EcommerceApp);
+	const ctx = this.context.get(App);
 
 	this.on(ctx, {
 		"product.selected": () => this.update(),
@@ -57,7 +57,7 @@ export function ProductDetail(this: Handle) {
 						boxShadow: "0 20px 25px rgba(0, 0, 0, 0.15)",
 					}}
 				>
-										<div
+					<div
 						css={{
 							padding: "24px",
 							borderBottom: "1px solid #e5e7eb",
@@ -96,9 +96,8 @@ export function ProductDetail(this: Handle) {
 							✕
 						</button>
 					</div>
-
-										<div css={{ padding: "32px" }}>
-												<div
+					<div css={{ padding: "32px" }}>
+						<div
 							css={{
 								marginBottom: "24px",
 								borderRadius: "12px",
@@ -116,8 +115,7 @@ export function ProductDetail(this: Handle) {
 								}}
 							/>
 						</div>
-
-												<div css={{ marginBottom: "24px" }}>
+						<div css={{ marginBottom: "24px" }}>
 							<h3
 								css={{
 									margin: "0 0 12px 0",
@@ -128,7 +126,6 @@ export function ProductDetail(this: Handle) {
 							>
 								{product.name}
 							</h3>
-
 							<div
 								css={{
 									fontSize: "32px",
@@ -139,8 +136,7 @@ export function ProductDetail(this: Handle) {
 							>
 								${product.price.toFixed(2)}
 							</div>
-
-														<div
+							<div
 								css={{
 									display: "inline-block",
 									padding: "6px 12px",
@@ -154,8 +150,7 @@ export function ProductDetail(this: Handle) {
 							>
 								{product.inStock ? "✓ In Stock" : "✗ Out of Stock"}
 							</div>
-
-														<div
+							<div
 								css={{
 									fontSize: "16px",
 									lineHeight: "1.6",
@@ -165,8 +160,7 @@ export function ProductDetail(this: Handle) {
 							>
 								{product.description}
 							</div>
-
-														<div
+							<div
 								css={{
 									background: "#f9fafb",
 									padding: "20px",
@@ -193,21 +187,31 @@ export function ProductDetail(this: Handle) {
 										color: "#6b7280",
 									}}
 								>
-									<div css={{ display: "flex", justifyContent: "space-between" }}>
+									<div
+										css={{ display: "flex", justifyContent: "space-between" }}
+									>
 										<span>Category:</span>
 										<span
-											css={{ fontWeight: "600", color: "#374151", textTransform: "capitalize" }}
+											css={{
+												fontWeight: "600",
+												color: "#374151",
+												textTransform: "capitalize",
+											}}
 										>
 											{product.category}
 										</span>
 									</div>
-									<div css={{ display: "flex", justifyContent: "space-between" }}>
+									<div
+										css={{ display: "flex", justifyContent: "space-between" }}
+									>
 										<span>Product ID:</span>
 										<span css={{ fontWeight: "600", color: "#374151" }}>
 											{product.id}
 										</span>
 									</div>
-									<div css={{ display: "flex", justifyContent: "space-between" }}>
+									<div
+										css={{ display: "flex", justifyContent: "space-between" }}
+									>
 										<span>Vegan Certified:</span>
 										<span css={{ fontWeight: "600", color: "#059669" }}>
 											✓ Yes
@@ -216,8 +220,7 @@ export function ProductDetail(this: Handle) {
 								</div>
 							</div>
 						</div>
-
-												<div css={{ display: "flex", gap: "12px" }}>
+						<div css={{ display: "flex", gap: "12px" }}>
 							{product.inStock ? (
 								<button
 									css={{
@@ -265,7 +268,6 @@ export function ProductDetail(this: Handle) {
 									Out of Stock
 								</button>
 							)}
-
 							<button
 								css={{
 									padding: "16px 24px",
