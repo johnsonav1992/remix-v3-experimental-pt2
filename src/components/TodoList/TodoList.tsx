@@ -13,8 +13,6 @@ export default function TodoList(this: Handle) {
 	});
 
 	return () => {
-		console.log("List render");
-
 		if (ctx.todos.length === 0) {
 			return (
 				<div
