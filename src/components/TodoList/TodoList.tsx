@@ -6,9 +6,8 @@ export default function TodoList(this: Handle) {
 	const ctx = this.context.get(App);
 
 	this.on(ctx, {
-		change: (e) => {
+		change: () => {
 			this.update();
-			console.log(e);
 		},
 	});
 
