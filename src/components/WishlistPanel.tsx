@@ -11,6 +11,7 @@ export function WishlistPanel(this: Handle) {
 		"wishlist.added": update,
 		"wishlist.removed": update,
 		"wishlist.synced": () => this.update(),
+		"products.loaded": update,
 	});
 
 	return () => {
